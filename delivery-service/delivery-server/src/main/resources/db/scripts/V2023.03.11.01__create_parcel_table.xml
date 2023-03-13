@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="01" author="Evgenii Zhukovets">
+        <createTable tableName="parcel">
+            <column name="parcel_id" type="bigserial"/>
+            <column name="order_id" type="bigint"/>
+            <column name="courier_id" type="bigint"/>
+            <column name="user_id" type="bigint"/>
+            <column name="status" type="varchar(100)"/>
+            <column name="start_point" type="varchar(225)"/>
+            <column name="destination" type="varchar(225)"/>
+            <column name="created_date" type="datetime"/>
+            <column name="last_modified_date" type="datetime"/>
+            <column name="latitude" type="float"/>
+            <column name="longitude" type="float"/>
+            <column name="version" type="int4"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,29 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: gateway
+
+delivery:
+  auth:
+    address: ${AUTH_ADDRESS:http://localhost:8081}
+  delivery:
+    address: ${DELIVERY_ADDRESS:http://localhost:8082}
+  order:
+    address: ${ORDER_ADDRESS:http://localhost:8083}
+
+logging:
+  level:
+    root: INFO
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
+        decoder: feign.jackson.JacksonDecoder
+        encoder: feign.jackson.JacksonEncoder
+        defaultRequestHeaders:
+          Content-Type: application/json
+          Accept: application/json
