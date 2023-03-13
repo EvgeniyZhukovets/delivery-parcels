@@ -28,6 +28,8 @@
         <snakeyaml.version>1.33</snakeyaml.version>
         <swagger.version>1.6.15</swagger.version>
         <hibernate.validator.version>5.0.3.Final</hibernate.validator.version>
+        <spock.version>2.1-M2-groovy-3.0</spock.version>
+        <easyrandom.version>5.0.0</easyrandom.version>
     </properties>
 
     <dependencyManagement>
@@ -88,6 +90,21 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate.validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-core</artifactId>
+                <version>${spock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-spring</artifactId>
+                <version>${spock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-random-core</artifactId>
+                <version>${easyrandom.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
