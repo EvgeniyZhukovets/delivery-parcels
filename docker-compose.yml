@@ -1,0 +1,102 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    container_name: "rabbitmq"
+    image: rabbitmq:3-management
+    networks:
+      - custom-network
+    environment:
+      - RABBITMQ_DEFAULT_USER=username
+      - RABBITMQ_DEFAULT_PASS=password
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: unless-stopped
+    networks:
+      - custom-network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: "/data/postgres"
+    volumes:
+      - ./postgres/postgre_init.sql:/docker-entrypoint-initdb.d/postgre_init.sql
+    ports:
+      - "5432:5432"
+
+  auth-service:
+    restart: always
+    container_name: auth-service
+    networks:
+      - custom-network
+    depends_on:
+      - rabbitmq
+      - postgres
+    build:
+      context: ./auth-service/auth-server
+      dockerfile: Dockerfile
+    ports:
+      - '8081:8081'
+    environment:
+      POSTGRES_HOST: postgres
+      RABBITMQ_HOST: rabbitmq
+
+  delivery-service:
+    restart: always
+    container_name: delivery-service
+    networks:
+      - custom-network
+    depends_on:
+      - rabbitmq
+      - postgres
+    build:
+      context: ./delivery-service/delivery-server
+      dockerfile: Dockerfile
+    ports:
+      - '8082:8082'
+    environment:
+      POSTGRES_HOST: postgres
+      RABBITMQ_HOST: rabbitmq
+
+  order-service:
+    restart: always
+    container_name: order-service
+    networks:
+      - custom-network
+    depends_on:
+      - rabbitmq
+      - postgres
+    build:
+      context: ./order-service/server
+      dockerfile: Dockerfile
+    ports:
+      - '8083:8083'
+    environment:
+      POSTGRES_HOST: postgres
+      RABBITMQ_HOST: rabbitmq
+
+  gateway:
+    restart: always
+    container_name: gateway
+    networks:
+      - custom-network
+    depends_on:
+      - rabbitmq
+      - postgres
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - '8084:8084'
+    environment:
+      AUTH_ADDRESS: auth-service
+      DELIVERY_ADDRESS: delivery-service
+      ORDER_ADDRESS: order-service
+
+networks:
+  custom-network:
+    driver: bridge
