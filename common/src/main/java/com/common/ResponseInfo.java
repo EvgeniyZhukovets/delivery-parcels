@@ -2,6 +2,7 @@ package com.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class ResponseInfo implements Serializable {
 
     private String resultCode = ResultCode.OK.getValue();
@@ -22,7 +24,7 @@ public class ResponseInfo implements Serializable {
 
     private Set<ConstraintInfo> constraints;
 
-    private ResponseInfo(ResultCode resultCode, String id, String message, String systemMessage,
+    public ResponseInfo(ResultCode resultCode, String id, String message, String systemMessage,
                         Set<ConstraintInfo> constraints) {
         this.resultCode = Optional.ofNullable(resultCode).map(ResultCode::getValue).orElse(null);
         this.id = id;

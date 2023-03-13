@@ -6,6 +6,7 @@ import com.common.ResultCode;
 import com.common.StandardResponse;
 import com.order.exception.InvalidOrderStatusStateException;
 import com.order.exception.OrderNotFoundException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -19,12 +20,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Log4j2
 public class CustomExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidOrderStatusStateException.class)
     public StandardResponse invalidOrderStatusStateExceptionHandler(InvalidOrderStatusStateException ex) {
         String message = "Invalid order status state";
+        log.warn(message + " exception", ex);
         return new StandardResponse(ResponseInfo.getInstance(ResultCode.UNEXPECTED_ERROR, message, ex.getMessage()));
     }
 
@@ -32,6 +35,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(OrderNotFoundException.class)
     public StandardResponse orderNotFoundExceptionHandler(OrderNotFoundException ex) {
         String message = "Order not found in db";
+        log.warn(message + " exception", ex);
         return new StandardResponse(ResponseInfo.getInstance(ResultCode.UNEXPECTED_ERROR, message, ex.getMessage()));
     }
 
@@ -48,6 +52,7 @@ public class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public StandardResponse exceptionHandler(Exception ex) {
+        log.warn("Unhandled exception", ex);
         return new StandardResponse(ResponseInfo.getInstance(ResultCode.UNEXPECTED_ERROR, ex.getMessage(), ex.getMessage()));
     }
 

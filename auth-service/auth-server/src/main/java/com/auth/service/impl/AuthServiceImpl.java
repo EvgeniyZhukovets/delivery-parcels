@@ -31,14 +31,14 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder encoder;
 
     @Override
-    public void signUp(SignUpRequest request, Role role) {
-        User user = validateAndPrepareUserEntityForSignUp(request, role);
+    public void signUp(SignUpRequest request) {
+        User user = validateAndPrepareUserEntityForSignUp(request, Role.USER);
         userRepository.save(user);
     }
 
     @Override
-    public void signUpCourier(SignUpRequest request, Role role) {
-        User user = validateAndPrepareUserEntityForSignUp(request, role);
+    public void signUpCourier(SignUpRequest request) {
+        User user = validateAndPrepareUserEntityForSignUp(request, Role.COURIER);
         user.setCourierStatus(CourierStatus.AVAILABLE);
         userRepository.save(user);
     }
